@@ -6,7 +6,9 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "package": "node ./scripts/package.js",
+    "deploy": "cdk deploy"
   },
   "author": "",
   "license": "ISC",
@@ -18,11 +20,15 @@
     "@aws-cdk/aws-cloudwatch": "^1.7.0",
     "@aws-cdk/aws-events": "^1.7.0",
     "@aws-cdk/aws-events-targets": "^1.7.0",
+    "@aws-cdk/aws-iam": "^1.7.0",
     "@aws-cdk/aws-lambda": "^1.7.0",
     "@aws-cdk/core": "^1.7.0",
     "aws-xray-sdk-core": "^2.3.6",
     "chrome-aws-lambda": "^1.19.0",
+    "node-cmd": "^3.0.0",
+    "ora": "^3.4.0",
     "puppeteer-core": "^1.19.0",
-    "short-uuid": "^3.1.1"
+    "short-uuid": "^3.1.1",
+    "zip-folder": "^1.0.0"
   }
 }

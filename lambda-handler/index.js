@@ -2,8 +2,8 @@ const chromium = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer-core')
 const AWS = require('aws-sdk')
 const AwsXRay = require('aws-xray-sdk-core')
-const { METRIC_NAME_SPACE } = require('../utils')
 
+const METRIC_NAME_SPACE = 'e2e'
 const MINUTE = 60000
 
 const rules = {

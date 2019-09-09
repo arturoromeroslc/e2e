@@ -1,0 +1,13 @@
+{
+  "name": "e2e-hanlder",
+  "version": "1.0.0",
+  "description": "handler code",
+  "main": "index.js",
+  "license": "ISC",
+  "dependencies": {
+    "aws-xray-sdk-core": "^2.3.6",
+    "chrome-aws-lambda": "^1.19.0",
+    "puppeteer-core": "^1.19.0",
+    "short-uuid": "^3.1.1"
+  }
+}
