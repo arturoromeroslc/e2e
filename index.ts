@@ -5,8 +5,8 @@ import targets = require('@aws-cdk/aws-events-targets')
 import lambda = require('@aws-cdk/aws-lambda')
 import cdk = require('@aws-cdk/core')
 import path = require('path')
-import { METRIC_NAME_SPACE } from './utils'
 
+const METRIC_NAME_SPACE = 'e2e'
 const DURATION = 2
 
 export class LambdaE2EStack extends cdk.Stack {
