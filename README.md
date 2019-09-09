@@ -1,7 +1,46 @@
 # Lambda-E2E
 
-This is a lambda function that executes every 5 minutes via Cloudwatch events.
-The lambda executes Puppeteer which will run UI tests.
+End-to-End Testing using Puppeteer and Lambda. Lambda executes every 5 minutes via Cloudwatch events.
+This was dicussed over two years [ago](https://github.com/GoogleChrome/puppeteer/issues/323)
+
+As developers we are committed to delivering a high level of product quality to our customers.
+
+In the past, I have used Selenium for running end-to-end tests. Stability issues with that setup resulted led to my poor adoption.
+
+To make e2e (end-to-end) testing an essential part of the developer workflow and help deliver a quality experience to our customers, we will focus on a few key principles:
+
+## Developer Experience
+
+- Make end-to-end tests simple to run and [debug](https://github.com/GoogleChrome/puppeteer#debugging-tips)
+- Push test failure notifications to engineers
+- Leverage open source libraries
+
+## Actionability
+
+- Push test reports to engineers
+- Clearly highlight failures and suite stability through notifications and reporting
+- Test failures need to be actionable
+
+## Scalability
+
+- Run many tests quickly and reliably
+- Make it straightforward for new engineers to learn
+
+# Introducing an end-to-end testing system using Puppeteer, Lambda, and AWS CDK.
+
+## Writing Tests in Puppeteer
+
+- Puppeteer is a Headless Chrome Node API, which controls a version of the Chrome browser.
+- Built on top of the Chrome DevTools Protocol
+- Event-driven architecture
+- High quality documentation & strong community of maintenance
+- Ability to test against different page viewports and network conditions
+
+# Drawbacks
+
+## cross-browser testing.
+
+- We found that many of our bugs were non-browser specific. Given the other methods we currently use for catching browser-specific bugs (not writing browser-specific code, better linting, JavaScript and CSS polyfills, smoke-testing on other browsers we support), we felt comfortable with this decision. Additional considerations included estimating migration time and setting up training for engineers to adapt from Selenium.
 
 ## Build
 
