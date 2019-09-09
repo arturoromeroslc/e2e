@@ -3,6 +3,8 @@ node_modules/*
 .vscode
 .DS_Store
 
+index.js
+
 # ckd output files
 cdk.out
 # Ignore node_modules

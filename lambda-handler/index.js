@@ -25,11 +25,12 @@ exports.handler = async event => {
   let page
   let attempt = 1
 
-  process.on('unhandledRejection', (reason, p) => {
+  process.on('unhandledRejection', async (reason, p) => {
     console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
     if (browser) {
       browser.close()
     }
+    await sendCloudWatchData(hasTestFailed)
   })
 
   try {
