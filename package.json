@@ -7,7 +7,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "cdk",
-    "package": "node ./scripts/package.js",
+    "package": "tsc && node ./scripts/package.js",
     "deploy": "cdk deploy"
   },
   "author": "",
@@ -25,6 +25,7 @@
     "@aws-cdk/core": "^1.7.0",
     "aws-xray-sdk-core": "^2.3.6",
     "chrome-aws-lambda": "^1.19.0",
+    "jest": "^24.9.0",
     "node-cmd": "^3.0.0",
     "ora": "^3.4.0",
     "puppeteer-core": "^1.19.0",

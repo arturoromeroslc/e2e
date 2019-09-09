@@ -1,4 +1,5 @@
 /node_modules
+node_modules/*
 .vscode
 # Ignore node_modules
 /lambda-handler/node_modules

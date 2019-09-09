@@ -116,7 +116,7 @@
       ],
       "Metadata": {
         "aws:cdk:path": "LambdaE2EExample/LambdaFunction/Resource",
-        "aws:asset:path": "asset.d145667df185f266852deb3cc215a2cd07823eca8027cea9fe8602b6b4978eac.zip",
+        "aws:asset:path": "asset.57c148e250745e6230f3b090733e1512a4ecbf65f8e54952b5c0413c94ba3ee3.zip",
         "aws:asset:property": "Code"
       }
     },

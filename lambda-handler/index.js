@@ -1,83 +1,13 @@
 const chromium = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer-core')
-const AWS = require('aws-sdk')
-const AwsXRay = require('aws-xray-sdk-core')
-
-const METRIC_NAME_SPACE = 'e2e'
-const MINUTE = 60000
-
-const rules = {
-  default: { fixed_target: 1, rate: 1.0 },
-  version: 1
-}
-
-AwsXRay.middleware.setSamplingRules(rules)
-AwsXRay.captureHTTPsGlobal(require('http'))
-AwsXRay.captureHTTPsGlobal(require('https'))
-AwsXRay.captureAWS(AWS)
-
-AWS.config.logger = {
-  log: msg => console.log(msg)
-}
-
-const cloudWatch = new AWS.CloudWatch({ apiVersion: '2010-08-01' })
-
-const getMetricObject = ({ Value, MetricName }) => ({
-  Timestamp: new Date(),
-  Unit: 'Count',
-  Value,
-  MetricName
-})
-
-const getCloudWatchParam = hasError => {
-  const cloudWatchParam = {
-    Namespace: METRIC_NAME_SPACE,
-    MetricData: []
-  }
-
-  if (hasError) {
-    cloudWatchParam.MetricData.push(
-      // @ts-ignore
-      getMetricObject({ MetricName: 'failed-workflow', Value: 1 }),
-      getMetricObject({ MetricName: 'successful-workflow', Value: 0 })
-    )
-  } else {
-    cloudWatchParam.MetricData.push(
-      // @ts-ignore
-      getMetricObject({ MetricName: 'successful-workflow', Value: 1 }),
-      getMetricObject({ MetricName: 'failed-workflow', Value: 0 })
-    )
-  }
-
-  return cloudWatchParam
-}
-
-// const getText = async (page, selector) => {
-//   await page.waitForSelector(selector, { timeout: 2 * MINUTE })
-//   const $element = await page.$(selector)
-
-//   return await page.evaluate(element => element.innerText, $element)
-// }
-
-// const clickButton = async (page, selector) => {
-//   await page.waitForSelector(selector, { timeout: 2 * MINUTE })
-//   const $element = await page.$(selector)
-
-//   $element.click()
-// }
+const expect = require('expect')
+const { sendCloudWatchData } = require('./cloudwatch')
 
 exports.handler = async event => {
-  let puppeteerError
+  let failedTest
   let browser
   let page
   let attempt = 1
-
-  process.on('unhandledRejection', (reason, p) => {
-    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
-    if (browser) {
-      browser.close()
-    }
-  })
 
   try {
     await browserActions()
@@ -89,15 +19,8 @@ exports.handler = async event => {
     }
   }
 
-  const hasError = Boolean(puppeteerError)
-  if (hasError) {
-    console.log('The canary has failed')
-  }
-
-  await cloudWatch.putMetricData(getCloudWatchParam(hasError)).promise()
-  return true
-
   async function browserActions() {
+    console.log(`attempt: ${attempt}`)
     try {
       browser = await puppeteer.launch({
         args: chromium.args,
@@ -112,16 +35,30 @@ exports.handler = async event => {
       const result = await page.title()
       console.log(`result: ${result}`)
 
-      return Promise.resolve()
+      const bestLaCroixFlavor = () => {
+        return 'grapefruit'
+      }
+
+      expect(bestLaCroixFlavor()).toBe('grapefruit!')
     } catch (error) {
-      console.log('Puppeteer error: ', error)
-      if (typeof error.message === 'string' && attempt === 1) {
+      if (!error.matcherResult && attempt === 1) {
+        console.log('Puppeteer error: ', error)
         attempt++
         await browserActions()
+      } else if (error && error.matcherResult.message) {
+        console.log('Assertion error:', error.matcherResult.message())
+        failedTest = true
+        return Promise.resolve()
       } else {
-        puppeteerError = true
+        failedTest = true
         return Promise.resolve()
       }
     }
   }
+
+  if (failedTest) {
+    console.log('The test has failed')
+  }
+
+  return await sendCloudWatchData(failedTest)
 }
