@@ -7,7 +7,7 @@ import cdk = require('@aws-cdk/core')
 import path = require('path')
 
 const METRIC_NAME_SPACE = 'e2e'
-const DURATION = 2
+const DURATION = 5
 
 export class LambdaE2EStack extends cdk.Stack {
   constructor(app: cdk.App, id: string) {
@@ -30,7 +30,7 @@ export class LambdaE2EStack extends cdk.Stack {
 
     const rule = new events.Rule(this, `Run every ${DURATION} minutes`, {
       schedule: events.Schedule.rate(cdk.Duration.minutes(DURATION)),
-      enabled: false
+      enabled: true
     })
 
     rule.addTarget(new targets.LambdaFunction(lambdaFn))

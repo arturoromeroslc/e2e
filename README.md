@@ -1,6 +1,7 @@
 # Lambda-E2E
 
-This example creates a new lambda function that executes every day at 6pm UTC
+This is a lambda function that executes every 5 minutes via Cloudwatch events.
+The lambda executes Puppeteer which will run UI tests.
 
 ## Build
 
@@ -9,10 +10,10 @@ To build this app, you need to be in this example's root folder. Then run the fo
 ```bash
 npm install -g aws-cdk
 npm install
-npm run build
+npm run package
 ```
 
-This will install the necessary CDK, then this example's dependencies, and then build your TypeScript files and your CloudFormation template.
+This will install the necessary CDK, then this example's dependencies, and then build your TypeScript files and your CloudFormation template, and zip the lambda handler code.
 
 ## Deploy
 
