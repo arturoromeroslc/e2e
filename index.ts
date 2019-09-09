@@ -43,10 +43,10 @@ export class LambdaE2EStack extends cdk.Stack {
     new cloudwatch.Alarm(this, 'Alarm', {
       alarmDescription: 'e2e critical path failed',
       metric: faliedMetric,
-      threshold: 100,
-      evaluationPeriods: DURATION,
+      threshold: 1,
+      evaluationPeriods: 5,
       statistic: 'Sum',
-      period: cdk.Duration.minutes(DURATION),
+      period: cdk.Duration.minutes(5),
       treatMissingData: cloudwatch.TreatMissingData.BREACHING
     })
 
