@@ -24,7 +24,8 @@ export class LambdaE2EStack extends cdk.Stack {
         path.join(__dirname, 'lambda-handler/index.zip')
       ),
       memorySize: 512,
-      timeout: cdk.Duration.minutes(5)
+      timeout: cdk.Duration.minutes(5),
+      tracing: lambda.Tracing.ACTIVE
     })
 
     const rule = new events.Rule(this, `Run every ${DURATION} minutes`, {

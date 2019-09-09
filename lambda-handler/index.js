@@ -1,7 +1,23 @@
 const chromium = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer-core')
 const expect = require('expect')
+const AWS = require('aws-sdk')
+const AwsXRay = require('aws-xray-sdk-core')
 const { sendCloudWatchData } = require('./cloudwatch')
+
+const rules = {
+  default: { fixed_target: 1, rate: 1.0 },
+  version: 1
+}
+
+AwsXRay.middleware.setSamplingRules(rules)
+AwsXRay.captureHTTPsGlobal(require('http'))
+AwsXRay.captureHTTPsGlobal(require('https'))
+AwsXRay.captureAWS(AWS)
+
+AWS.config.logger = {
+  log: msg => console.log(msg)
+}
 
 exports.handler = async event => {
   let failedTest
@@ -15,12 +31,12 @@ exports.handler = async event => {
     if (browser && page) {
       await page.waitFor(100)
       await browser.close()
-      console.log('ending')
+      console.log('Ending Lambda execution')
     }
   }
 
   async function browserActions() {
-    console.log(`attempt: ${attempt}`)
+    console.log(`run attempt: ${attempt}`)
     try {
       browser = await puppeteer.launch({
         args: chromium.args,
@@ -32,8 +48,8 @@ exports.handler = async event => {
       page = await browser.newPage()
 
       await page.goto(event.url || 'https://example.com')
-      const result = await page.title()
-      console.log(`result: ${result}`)
+      const url = await page.url()
+      console.log(`loaded url: ${url}`)
 
       const bestLaCroixFlavor = () => {
         return 'grapefruit'
@@ -42,23 +58,26 @@ exports.handler = async event => {
       expect(bestLaCroixFlavor()).toBe('grapefruit!')
     } catch (error) {
       if (!error.matcherResult && attempt === 1) {
-        console.log('Puppeteer error: ', error)
+        console.log('😭 Puppeteer error 😞 ')
+        console.log(error)
         attempt++
         await browserActions()
       } else if (error && error.matcherResult.message) {
-        console.log('Assertion error:', error.matcherResult.message())
+        console.log('️❗ Assertion error ❗')
+        console.log(error.matcherResult.message())
         failedTest = true
-        return Promise.resolve()
       } else {
+        console.log('not sure what happened 🤷🏽‍♀️')
+        console.log(error)
         failedTest = true
-        return Promise.resolve()
       }
     }
   }
 
   if (failedTest) {
-    console.log('The test has failed')
+    console.log('🥺 Our e2e tests have failed 🤨')
   }
 
-  return await sendCloudWatchData(failedTest)
+  await sendCloudWatchData(failedTest)
+  return
 }

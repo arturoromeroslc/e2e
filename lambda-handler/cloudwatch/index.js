@@ -32,4 +32,4 @@ const getCloudWatchParam = hasError => {
 }
 
 exports.sendCloudWatchData = async hasError =>
-  cloudWatch.putMetricData(getCloudWatchParam(hasError)).promise()
+  await cloudWatch.putMetricData(getCloudWatchParam(hasError)).promise()

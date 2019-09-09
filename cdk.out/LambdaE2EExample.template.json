@@ -40,6 +40,14 @@
         "PolicyDocument": {
           "Statement": [
             {
+              "Action": [
+                "xray:PutTraceSegments",
+                "xray:PutTelemetryRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            },
+            {
               "Action": "cloudwatch:PutMetricData",
               "Effect": "Allow",
               "Resource": "*"
@@ -108,7 +116,10 @@
         },
         "Runtime": "nodejs8.10",
         "MemorySize": 512,
-        "Timeout": 300
+        "Timeout": 300,
+        "TracingConfig": {
+          "Mode": "Active"
+        }
       },
       "DependsOn": [
         "LambdaFunctionServiceRoleDefaultPolicy32EEEE35",
@@ -116,7 +127,7 @@
       ],
       "Metadata": {
         "aws:cdk:path": "LambdaE2EExample/LambdaFunction/Resource",
-        "aws:asset:path": "asset.57c148e250745e6230f3b090733e1512a4ecbf65f8e54952b5c0413c94ba3ee3.zip",
+        "aws:asset:path": "asset.c1539f11e84816bab12ca41c3c10424362edc1783d1bd9b92ed187d1ef4d5bc5.zip",
         "aws:asset:property": "Code"
       }
     },
