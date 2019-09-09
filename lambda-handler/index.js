@@ -1,9 +1,9 @@
 const chromium = require('chrome-aws-lambda')
 const puppeteer = require('puppeteer-core')
-const expect = require('expect')
 const AWS = require('aws-sdk')
 const AwsXRay = require('aws-xray-sdk-core')
 const { sendCloudWatchData } = require('./cloudwatch')
+const { testApp } = require('./testing')
 
 const rules = {
   default: { fixed_target: 1, rate: 1.0 },
@@ -20,7 +20,7 @@ AWS.config.logger = {
 }
 
 exports.handler = async event => {
-  let failedTest
+  let hasTestFailed
   let browser
   let page
   let attempt = 1
@@ -50,31 +50,31 @@ exports.handler = async event => {
       await page.goto(event.url || 'https://example.com')
       const url = await page.url()
       console.log(`loaded url: ${url}`)
-
-      const title = await page.title()
-      expect(title).toBe('example')
+      testApp(page)
     } catch (error) {
       if (!error.matcherResult && attempt === 1) {
-        console.log('😭 Puppeteer error 😞 ')
+        console.log('😭 Puppeteer error 😞')
         console.log(error)
         attempt++
         await browserActions()
       } else if (error && error.matcherResult && error.matcherResult.message) {
         console.log('️❗ Assertion error ❗')
         console.log(error.matcherResult.message())
-        failedTest = true
+        hasTestFailed = true
       } else {
         console.log('not sure what happened 🤷🏽‍♀️')
         console.log(error)
-        failedTest = true
+        hasTestFailed = true
       }
     }
   }
 
-  if (failedTest) {
+  if (hasTestFailed) {
     console.log('🥺 Our e2e tests have failed 🤨')
+  } else {
+    console.log('✅ Our e2e tests have passed 🥰')
   }
 
-  await sendCloudWatchData(failedTest)
+  await sendCloudWatchData(hasTestFailed)
   return
 }
