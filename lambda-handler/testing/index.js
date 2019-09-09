@@ -1,14 +1,16 @@
 const expect = require('expect')
 const { getText } = require('../puppeteer-utils')
 
-const inputBox = '#downshift-0-input'
-const EightItem = '#downshift-0-item-8'
+const INPUT_BOX = '#downshift-0-input'
+const ITEM = '#downshift-0-item-8'
+const MINUTE = 60000
 
 exports.testApp = async page => {
-  await page.waitForSelector(inputBox, { timeout: 2 * 60000 })
-  await page.type(inputBox, 'cookies')
-  await page.waitForSelector(EightItem, { timeout: 2 * 60000 })
-  await page.click(EightItem)
+  await page.waitForSelector(INPUT_BOX, { timeout: MINUTE })
+  await page.type(INPUT_BOX, 'cookies')
+  await page.waitForSelector(ITEM, { timeout: MINUTE })
+  await page.click(ITEM)
   const total = await getText(page, '#total-count')
-  console.log('total', total)
+  expect(total).toBe(259)
+  console.log('total was: ', total)
 }
