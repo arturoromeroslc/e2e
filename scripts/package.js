@@ -11,8 +11,7 @@ zipFolder(
     if (err) {
       return spinner.fail(`oh no, error.`, err)
     } else {
-      return spinner.succeed(`
-      EXCELLENT packaged, now run:
+      return spinner.succeed(`EXCELLENT, packaged. Now run:
       npm run deploy
     `)
     }

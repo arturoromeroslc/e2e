@@ -51,18 +51,15 @@ exports.handler = async event => {
       const url = await page.url()
       console.log(`loaded url: ${url}`)
 
-      const bestLaCroixFlavor = () => {
-        return 'grapefruit'
-      }
-
-      expect(bestLaCroixFlavor()).toBe('grapefruit!')
+      const title = await page.title()
+      expect(title).toBe('example')
     } catch (error) {
       if (!error.matcherResult && attempt === 1) {
         console.log('😭 Puppeteer error 😞 ')
         console.log(error)
         attempt++
         await browserActions()
-      } else if (error && error.matcherResult.message) {
+      } else if (error && error.matcherResult && error.matcherResult.message) {
         console.log('️❗ Assertion error ❗')
         console.log(error.matcherResult.message())
         failedTest = true

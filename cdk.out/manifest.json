@@ -53,10 +53,10 @@
           {
             "type": "aws:cdk:asset",
             "data": {
-              "path": "asset.c1539f11e84816bab12ca41c3c10424362edc1783d1bd9b92ed187d1ef4d5bc5.zip",
+              "path": "asset.51bddf8b57a46d4d4355beccf63568229484dcafe20b276aeaeb385ad3bee92b.zip",
               "id": "LambdaE2EExampleLambdaFunctionCodeC5E524EE",
               "packaging": "file",
-              "sourceHash": "c1539f11e84816bab12ca41c3c10424362edc1783d1bd9b92ed187d1ef4d5bc5",
+              "sourceHash": "51bddf8b57a46d4d4355beccf63568229484dcafe20b276aeaeb385ad3bee92b",
               "s3BucketParameter": "LambdaFunctionCodeS3BucketA470E70F",
               "s3KeyParameter": "LambdaFunctionCodeS3VersionKey0A87C2A6",
               "artifactHashParameter": "LambdaFunctionCodeArtifactHash82D6A67B"
