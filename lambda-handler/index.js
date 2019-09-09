@@ -3,7 +3,7 @@ const puppeteer = require('puppeteer-core')
 const AWS = require('aws-sdk')
 const AwsXRay = require('aws-xray-sdk-core')
 const { sendCloudWatchData } = require('./cloudwatch')
-const { testApp } = require('./testing')
+const { testApp } = require('./e2e')
 
 const rules = {
   default: { fixed_target: 1, rate: 1.0 },
