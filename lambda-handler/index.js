@@ -25,6 +25,13 @@ exports.handler = async event => {
   let page
   let attempt = 1
 
+  process.on('unhandledRejection', (reason, p) => {
+    console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+    if (browser) {
+      browser.close()
+    }
+  })
+
   try {
     await browserActions()
   } finally {
@@ -42,15 +49,14 @@ exports.handler = async event => {
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath,
-        headless: chromium.headless,
-        waitUntil: 'load'
+        headless: chromium.headless
       })
       page = await browser.newPage()
 
-      await page.goto(event.url || 'https://example.com')
+      await page.goto('https://determined-heyrovsky-44a865.netlify.com/')
       const url = await page.url()
       console.log(`loaded url: ${url}`)
-      testApp(page)
+      await testApp(page)
     } catch (error) {
       if (!error.matcherResult && attempt === 1) {
         console.log('😭 Puppeteer error 😞')

@@ -1,6 +1,9 @@
 /node_modules
 node_modules/*
 .vscode
+
+# ckd output files
+cdk.out
 # Ignore node_modules
 /lambda-handler/node_modules
 
