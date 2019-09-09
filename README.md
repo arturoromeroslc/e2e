@@ -7,7 +7,9 @@ As developers we are committed to delivering a high level of product quality to 
 
 In the past, I have used Selenium for running end-to-end tests. Stability issues with that setup resulted led to my poor adoption.
 
-To make e2e (end-to-end) testing an essential part of the developer workflow and help deliver a quality experience to our customers, we will focus on a few key principles:
+Test like end-to-end (E2E) tests, take more time to author, but give you much more confidence that the application will work as the user expects, since they replicate scenarios similar to how a user would use the application in real life.
+
+To make E2E testing an essential part of the developer workflow and help deliver a quality experience to our customers, we will focus on a few key principles:
 
 ## Developer Experience
 

@@ -5,11 +5,13 @@
   "main": "index.js",
   "license": "ISC",
   "dependencies": {
+    "@xstate/test": "^0.1.0",
     "aws-xray-sdk-core": "^2.3.6",
     "chrome-aws-lambda": "^1.19.0",
     "expect": "^24.9.0",
     "puppeteer-core": "^1.19.0",
-    "short-uuid": "^3.1.1"
+    "short-uuid": "^3.1.1",
+    "xstate": "^4.6.7"
   },
   "devDependencies": {}
 }
