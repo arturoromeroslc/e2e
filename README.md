@@ -14,19 +14,20 @@ To make E2E testing an essential part of the developer workflow and help deliver
 ## Developer Experience
 
 - Make end-to-end tests simple to run and [debug](https://github.com/GoogleChrome/puppeteer#debugging-tips)
-- Push test failure notifications to engineers
+- Push test failure notifications to our engineers
 - Leverage open source libraries
 
 ## Actionability
 
 - Push test reports to engineers
 - Clearly highlight failures and suite stability through notifications and reporting
-- Test failures need to be actionable
+- Test failures to be actionable
+- Make it as straightforward for new engineers to learn
 
 ## Scalability
 
-- Run many tests quickly and reliably
-- Make it straightforward for new engineers to learn
+- Run tests quickly and reliably
+- Run as many test as we wanted in parallel
 
 # Introducing an end-to-end testing system using Puppeteer, Lambda, and AWS CDK.
 
