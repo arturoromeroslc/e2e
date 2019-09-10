@@ -19,8 +19,8 @@ AWS.config.logger = {
   log: msg => console.log(msg)
 }
 
-exports.handler = async event => {
-  let hasTestFailed
+exports.handler = async _event => {
+  let hasTestFailed = true
   let browser
   let page
   let attempt = 1
@@ -58,6 +58,7 @@ exports.handler = async event => {
       const url = await page.url()
       console.log(`loaded url: ${url}`)
       await testApp(page)
+      hasTestFailed = false
     } catch (error) {
       if (!error.matcherResult && attempt === 1) {
         console.log('😭 Puppeteer error 😞')
@@ -67,11 +68,9 @@ exports.handler = async event => {
       } else if (error && error.matcherResult && error.matcherResult.message) {
         console.log('️❗ Assertion error ❗')
         console.log(error.matcherResult.message())
-        hasTestFailed = true
       } else {
         console.log('not sure what happened 🤷🏽‍♀️')
         console.log(error)
-        hasTestFailed = true
       }
     }
   }

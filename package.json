@@ -18,10 +18,13 @@
   },
   "dependencies": {
     "@aws-cdk/aws-cloudwatch": "^1.7.0",
+    "@aws-cdk/aws-cloudwatch-actions": "^1.7.0",
     "@aws-cdk/aws-events": "^1.7.0",
     "@aws-cdk/aws-events-targets": "^1.7.0",
     "@aws-cdk/aws-iam": "^1.7.0",
     "@aws-cdk/aws-lambda": "^1.7.0",
+    "@aws-cdk/aws-sns": "^1.7.0",
+    "@aws-cdk/aws-sns-subscriptions": "^1.7.0",
     "@aws-cdk/core": "^1.7.0",
     "aws-xray-sdk-core": "^2.3.6",
     "chrome-aws-lambda": "^1.19.0",
