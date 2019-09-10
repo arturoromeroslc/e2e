@@ -1,3 +1,16 @@
+/**
+ * 1. Add deps
+ * 2. Add a new stack
+ * 3. Add Lambda resource
+ * 4. Add iam.PolicyStatement
+ * 5. add role to lambda
+ * 6. Add rule
+ * 7. Add targe
+ * 8. Add metric
+ * 9. Add alarm
+ * 10. Add topic
+ */
+
 import events = require('@aws-cdk/aws-events')
 import cloudwatch = require('@aws-cdk/aws-cloudwatch')
 import actions = require('@aws-cdk/aws-cloudwatch-actions')
@@ -22,7 +35,6 @@ export class LambdaE2EStack extends cdk.Stack {
     const statement = new iam.PolicyStatement()
     statement.addActions('cloudwatch:PutMetricData')
     statement.addResources('*')
-
     /**
      * Setup Lambda Function settings
      */
@@ -36,6 +48,7 @@ export class LambdaE2EStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(5),
       tracing: lambda.Tracing.ACTIVE //x-ray tracing, useful for debugging.
     })
+
     /**
      * Add cloudwatch policy statement to lambda
      */
@@ -44,7 +57,7 @@ export class LambdaE2EStack extends cdk.Stack {
     /**
      * Create Cloudwatch rule to run every DURATION minutes on the lambda created above
      */
-    const rule = new events.Rule(this, `Run every ${DURATION} minutes`, {
+    const rule = new events.Rule(this, `Run every DURATION minutes`, {
       schedule: events.Schedule.rate(cdk.Duration.minutes(DURATION)),
       enabled: true
     })
@@ -54,7 +67,7 @@ export class LambdaE2EStack extends cdk.Stack {
     /**
      * Create a metric in Cloudwatch where the lambda with log success of failure workflows
      */
-    const failedMetric = new cloudwatch.Metric({
+    const faileddMetric = new cloudwatch.Metric({
       namespace: METRIC_NAME_SPACE,
       metricName: 'failed-workflow'
     })
@@ -64,7 +77,7 @@ export class LambdaE2EStack extends cdk.Stack {
      */
     const alarm = new cloudwatch.Alarm(this, 'Alarm', {
       alarmDescription: 'e2e critical path failed',
-      metric: failedMetric,
+      metric: faileddMetric,
       threshold: 1,
       evaluationPeriods: 1,
       statistic: 'Sum',

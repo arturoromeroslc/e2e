@@ -34,44 +34,37 @@ exports.handler = async _event => {
   })
 
   try {
-    await browserActions()
+    browser = await puppeteer.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless
+    })
+    page = await browser.newPage()
+
+    await page.goto(
+      'https://5d774a6ee8d9e19674251c3a--determined-heyrovsky-44a865.netlify.com/'
+    )
+    const url = await page.url()
+    console.log(`loaded url: ${url}`)
+    await testApp(page)
+    hasTestFailed = false
+  } catch (error) {
+    if (!error.matcherResult && attempt === 1) {
+      console.log('😭 Puppeteer error 😞')
+      console.log(error)
+    } else if (error && error.matcherResult && error.matcherResult.message) {
+      console.log('️❗ Assertion error ❗')
+      console.log(error.matcherResult.message())
+    } else {
+      console.log('not sure what happened 🤷🏽‍♀️')
+      console.log(error)
+    }
   } finally {
     if (browser && page) {
       await page.waitFor(100)
       await browser.close()
       console.log('Ending Lambda execution')
-    }
-  }
-
-  async function browserActions() {
-    console.log(`run attempt: ${attempt}`)
-    try {
-      browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
-        headless: chromium.headless
-      })
-      page = await browser.newPage()
-
-      await page.goto('https://determined-heyrovsky-44a865.netlify.com/')
-      const url = await page.url()
-      console.log(`loaded url: ${url}`)
-      await testApp(page)
-      hasTestFailed = false
-    } catch (error) {
-      if (!error.matcherResult && attempt === 1) {
-        console.log('😭 Puppeteer error 😞')
-        console.log(error)
-        attempt++
-        await browserActions()
-      } else if (error && error.matcherResult && error.matcherResult.message) {
-        console.log('️❗ Assertion error ❗')
-        console.log(error.matcherResult.message())
-      } else {
-        console.log('not sure what happened 🤷🏽‍♀️')
-        console.log(error)
-      }
     }
   }
 
