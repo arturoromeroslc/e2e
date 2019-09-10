@@ -4,6 +4,7 @@ node_modules/*
 .DS_Store
 
 index.js
+infra.js
 
 # ckd output files
 cdk.out
