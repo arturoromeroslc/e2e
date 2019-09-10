@@ -42,7 +42,7 @@ export class LambdaE2EStack extends cdk.Stack {
     lambdaFn.addToRolePolicy(statement)
 
     /**
-     * Create Cloudwatch rule to run every 5 minutes on the lambda created above
+     * Create Cloudwatch rule to run every DURATION minutes on the lambda created above
      */
     const rule = new events.Rule(this, `Run every ${DURATION} minutes`, {
       schedule: events.Schedule.rate(cdk.Duration.minutes(DURATION)),

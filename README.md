@@ -1,6 +1,6 @@
 # Lambda-E2E
 
-End-to-End Testing using Puppeteer and Lambda. Lambda executes every 5 minutes via Cloudwatch events.
+End-to-End Testing using Puppeteer and Lambda. Lambda executes every n minutes via Cloudwatch events.
 This was dicussed over two years [ago](https://github.com/GoogleChrome/puppeteer/issues/323)
 
 As developers we are committed to delivering a high level of product quality to our customers.
