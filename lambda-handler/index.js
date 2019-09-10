@@ -1,9 +1,11 @@
 const chromium = require('chrome-aws-lambda')
+//https://www.npmjs.com/package/chrome-aws-lambda
 const puppeteer = require('puppeteer-core')
+//https://www.npmjs.com/package/puppeteer-core#puppeteer-core
 const AWS = require('aws-sdk')
 const AwsXRay = require('aws-xray-sdk-core')
 const { sendCloudWatchData } = require('./cloudwatch')
-const { testApp } = require('./e2e')
+const { foodResults } = require('./e2e')
 
 const rules = {
   default: { fixed_target: 1, rate: 1.0 },
@@ -23,7 +25,6 @@ exports.handler = async _event => {
   let hasTestFailed = true
   let browser
   let page
-  let attempt = 1
 
   process.on('unhandledRejection', async (reason, p) => {
     console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
@@ -47,10 +48,10 @@ exports.handler = async _event => {
     )
     const url = await page.url()
     console.log(`loaded url: ${url}`)
-    await testApp(page)
+    await foodResults(page)
     hasTestFailed = false
   } catch (error) {
-    if (!error.matcherResult && attempt === 1) {
+    if (!error.matcherResult) {
       console.log('😭 Puppeteer error 😞')
       console.log(error)
     } else if (error && error.matcherResult && error.matcherResult.message) {
@@ -69,9 +70,9 @@ exports.handler = async _event => {
   }
 
   if (hasTestFailed) {
-    console.log('🥺 Our e2e tests have failed 🤨')
+    console.log('🔴 Our e2e tests have failed 🥺')
   } else {
-    console.log('✅ Our e2e tests have passed 🥰')
+    console.log('✅ Our e2e tests have passed 💚')
   }
 
   await sendCloudWatchData(hasTestFailed)

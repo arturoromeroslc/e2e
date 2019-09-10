@@ -11,7 +11,7 @@ const getText = async (page, selector) => {
   return await page.evaluate(element => element.innerText, $element)
 }
 
-exports.testApp = async page => {
+exports.foodResults = async page => {
   await page.waitFor(INPUT_BOX, MINUTE_TIMEOUT)
   await page.type(INPUT_BOX, 'cookies')
   await page.waitFor(ITEM, MINUTE_TIMEOUT)
