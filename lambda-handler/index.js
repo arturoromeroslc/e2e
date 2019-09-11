@@ -1,3 +1,4 @@
+// https://5d774a6ee8d9e19674251c3a--determined-heyrovsky-44a865.netlify.com/
 const chromium = require('chrome-aws-lambda')
 //https://www.npmjs.com/package/chrome-aws-lambda
 const puppeteer = require('puppeteer-core')
@@ -44,12 +45,12 @@ exports.handler = async _event => {
     page = await browser.newPage()
 
     await page.goto(
-      'https://5d774a6ee8d9e19674251c3a--determined-heyrovsky-44a865.netlify.com/'
+      'https://5d785892c9900b0dea6d283a--determined-heyrovsky-44a865.netlify.com/'
     )
     const url = await page.url()
     console.log(`loaded url: ${url}`)
     await foodResults(page)
-    hasTestFailed = false
+    hasTestFailed = true
   } catch (error) {
     if (!error.matcherResult) {
       console.log('😭 Puppeteer error 😞')
